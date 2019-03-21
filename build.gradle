@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = 'PartitionAsistant'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+}
+
+jar {
+    manifest {
+        attributes 'Application-Name': 'aws-alb-hive-partition-assistant'
+        attributes 'Main-Class': mainClassName
+    }
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = '5.0'
+}
