@@ -3,13 +3,14 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'PartitionAsistant'
+mainClassName = 'PartitionAssistant'
 
 repositories {
     jcenter()
 }
 
 dependencies {
+    implementation 'org.apache.hive:hive-jdbc:3.1.1'
 }
 
 jar {
