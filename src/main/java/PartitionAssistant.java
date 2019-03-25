@@ -32,9 +32,9 @@ public class PartitionAssistant {
                         .append('/')
                         .append(partition.getYear())
                         .append('/')
-                        .append(partition.getMonth())
+                        .append(String.format("%02d", partition.getMonth()))
                         .append('/')
-                        .append(partition.getDay());
+                        .append(String.format("%02d", partition.getDay()));
                 partition.setLocation(stringBuilder.toString());
                 hive.addPartition(partition);
                 localDate = localDate.plusDays(1);

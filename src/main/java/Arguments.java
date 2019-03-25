@@ -18,7 +18,7 @@ public class Arguments implements Callable<Arguments> {
     private String accountId;
     @Option(names = {"--bucket"}, required = true, description = "The name of the S3 bucket.")
     private String bucket;
-    @Option(names = {"--from"}, required = true, description = "From date.")
+    @Option(names = {"--from"}, required = true, description = "From date, inclusive.")
     private LocalDate from;
     @Option(names = {"--hive-url"}, description = "Hive url. (default: ${DEFAULT-VALUE})")
     private String hiveUrl = "localhost:10000";
@@ -28,7 +28,7 @@ public class Arguments implements Callable<Arguments> {
     private String region = "us-east-1";
     @Option(names = {"--table-name"}, description = "Table name. (default: ${DEFAULT-VALUE})")
     private String tableName = "alb_logs";
-    @Option(names = {"--to"}, description = "To date. (default: ${DEFAULT-VALUE})")
+    @Option(names = {"--to"}, description = "To date, inclusive. (default: ${DEFAULT-VALUE})")
     private LocalDate to = LocalDate.now();
 
     @Override
