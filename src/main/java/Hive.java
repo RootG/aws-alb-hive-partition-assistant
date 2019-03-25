@@ -1,7 +1,6 @@
 import java.io.Closeable;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,12 +20,12 @@ public class Hive implements Closeable {
                 .getConnection("jdbc:hive2://" + hiveUrl + "/default", properties);
     }
 
-    public void createTable(String tableName, String albLogsDirectory, String accountId, String region) throws SQLException, FileNotFoundException {
-        URL url = getClass().getClassLoader().getResource("alb_logs_table.sql");
-        try (Scanner scanner = new Scanner(new File(url.getFile())).useDelimiter("\\Z")) {
+    public void createTable(String tableName, String path, String accountId, String region) throws SQLException, FileNotFoundException {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("alb_logs_table.sql");
+        try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\Z")) {
             String createTableSql = String.format(scanner.next(),
                     tableName,
-                    albLogsDirectory,
+                    path,
                     accountId,
                     region);
             try (Statement statement = connection.createStatement()) {

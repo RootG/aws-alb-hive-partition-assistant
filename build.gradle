@@ -11,6 +11,9 @@ repositories {
 
 dependencies {
     implementation 'org.apache.hive:hive-jdbc:3.1.1'
+    implementation 'info.picocli:picocli:3.9.5'
+    compileOnly 'org.projectlombok:lombok:1.18.6'
+    annotationProcessor 'org.projectlombok:lombok:1.18.6'
 }
 
 jar {
@@ -18,8 +21,11 @@ jar {
         attributes 'Application-Name': 'aws-alb-hive-partition-assistant'
         attributes 'Main-Class': mainClassName
     }
+    zip64 = true
     from {
-        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.findAll { !it.name.endsWith('pom') }.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
 }
 
