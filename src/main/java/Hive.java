@@ -1,3 +1,6 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -9,6 +12,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Hive implements Closeable {
+    private static final Logger LOGGER = LogManager.getLogger(Hive.class);
     private static final int INVALID_PARTITION = 10006;
     private final Connection connection;
 
@@ -72,7 +76,7 @@ public class Hive implements Closeable {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("An error occurred  while closing hive connection.", e);
         }
     }
 }

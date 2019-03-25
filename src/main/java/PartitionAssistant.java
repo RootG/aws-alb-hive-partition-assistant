@@ -1,3 +1,7 @@
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import picocli.CommandLine;
 
 import java.io.FileNotFoundException;
@@ -5,10 +9,15 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class PartitionAssistant {
+    private static final Logger LOGGER = LogManager.getLogger(PartitionAssistant.class);
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
         Arguments arguments = CommandLine.call(new Arguments(), args);
         if (arguments == null) {
             return;
+        }
+        if (arguments.isVerbose()) {
+            Configurator.setLevel(PartitionAssistant.class.getCanonicalName(), Level.ALL);
         }
         String path;
         if (arguments.getPrefix() == null || arguments.getPrefix().isEmpty()) {
@@ -30,12 +39,13 @@ public class PartitionAssistant {
                         arguments.getAccountId(),
                         arguments.getRegion()))
                         .append('/')
-                        .append(partition.getYear())
+                        .append(String.format("%04d", partition.getYear()))
                         .append('/')
                         .append(String.format("%02d", partition.getMonth()))
                         .append('/')
                         .append(String.format("%02d", partition.getDay()));
                 partition.setLocation(stringBuilder.toString());
+                LOGGER.info(stringBuilder.toString());
                 hive.addPartition(partition);
                 localDate = localDate.plusDays(1);
             }

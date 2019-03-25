@@ -30,6 +30,8 @@ public class Arguments implements Callable<Arguments> {
     private String tableName = "alb_logs";
     @Option(names = {"--to"}, description = "To date, inclusive. (default: ${DEFAULT-VALUE})")
     private LocalDate to = LocalDate.now();
+    @Option(names = {"--verbose"}, description = "Be verbose.")
+    private boolean verbose = false;
 
     @Override
     public Arguments call() {
