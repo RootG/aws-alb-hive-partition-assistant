@@ -18,8 +18,8 @@ public class Arguments implements Callable<Arguments> {
     private String accountId;
     @Option(names = {"--bucket"}, required = true, description = "The name of the S3 bucket.")
     private String bucket;
-    @Option(names = {"--from"}, required = true, description = "From date, inclusive.")
-    private LocalDate from;
+    @Option(names = {"--from"}, description = "From date, inclusive. (default: ${DEFAULT-VALUE})")
+    private LocalDate from = LocalDate.now();
     @Option(names = {"--hive-url"}, description = "Hive url. (default: ${DEFAULT-VALUE})")
     private String hiveUrl = "localhost:10000";
     @Option(names = {"--prefix"}, description = "The prefix (logical hierarchy) in the bucket. (default: ${DEFAULT-VALUE})")

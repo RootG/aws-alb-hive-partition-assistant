@@ -7,12 +7,22 @@ import picocli.CommandLine;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class PartitionAssistant {
     private static final Logger LOGGER = LogManager.getLogger(PartitionAssistant.class);
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException {
-        Arguments arguments = CommandLine.call(new Arguments(), args);
+        CommandLine.Help.Ansi ansi = CommandLine.Help.Ansi.AUTO;
+        CommandLine.AbstractParseResultHandler<List<Object>> abstractParseResultHandler = new CommandLine.RunLast().useOut(System.out).useAnsi(ansi);
+        CommandLine.DefaultExceptionHandler<List<Object>> defaultExceptionHandler = new CommandLine.DefaultExceptionHandler<List<Object>>()
+                .useErr(System.err)
+                .useAnsi(ansi);
+        CommandLine commandLine = new CommandLine(new Arguments())
+                .registerConverter(LocalDate.class, new LocalDateConverter())
+                .registerConverter(String.class, new StringConverter());
+        List<Object> results = commandLine.parseWithHandlers(abstractParseResultHandler, defaultExceptionHandler, args);
+        Arguments arguments = (results == null || results.isEmpty()) ? null : (Arguments) results.get(0);
         if (arguments == null) {
             return;
         }
